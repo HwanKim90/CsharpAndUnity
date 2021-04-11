@@ -4,77 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MathTestGiveUp
+namespace NumberK
 {
     public class Solution
     {
-        public int[] solution(int[] answers)
+        public int[] solution(int[] array, int[,] commands)
         {
-            //수포자가 찍는 방식
-            int[] student1 = { 1, 2, 3, 4, 5, }; // 5개 패턴
-            int[] student2 = { 2, 1, 2, 3, 2, 4, 2, 5 }; // 8개 반복 패턴
-            int[] student3 = { 3, 3, 1, 1, 2, 2, 4, 4, 5, 5 }; //10개 반복 패턴
+            // array 배열을 i번째 j번째 자르고싶다. 
+            // i,j는 commands 2차배열 인덱스 0,1에 있다.
+            // index 0, 1번이 start, end
+            List<int> cutIndex = new List<int>();
 
-            //정답수 카운트 할수 있는 배열 만들기 
-            //나중에 가장 많이 맞힌 사람 비교해야하니깐 배열로 만듬
-            int[] rightAnswerNum = new int[3];
+            // 리턴할 정답 리스트만들기
+            List<int> answer = new List<int>();
 
-            //답안지랑 찍은거랑 비교
-            for (int i = 0; i < answers.Length; i++)
+            for (int i = 0; i < commands.GetLength(0); i++)
             {
-                // 1번학생 답안지 비교
-                if (student1[i % 5] == answers[i])
-                {
-                    // 1학생 정답수 체크(카운트하기)
-                    rightAnswerNum[0]++;
-                }
+                //index값이니깐 1씩 빼준다.
+                int start = commands[i, 0] - 1;
+                // 시작에서 끝 이동 -> end - start ==> count
+                int end = commands[i, 1] - start;
 
-                // 2번학생 답안지 비교
-                if (student2[i % 8] == answers[i])
-                {
-                    // 1학생 정답수 체크(카운트하기)
-                    rightAnswerNum[1]++;
-                }
+                // 자른 인덱스 안에 값 넣어주기
+                // GetRange (int index, int count) index부터 count만큼 이동
+                cutIndex = array.ToList<int>().GetRange(start, end);
+                //정렬하기
+                cutIndex.Sort();
 
-                // 3번학생 답안지 비교
-                if (student3[i % 10] == answers[i])
-                {
-                    // 1학생 정답수 체크(카운트하기)
-                    rightAnswerNum[2]++;
-                }
+                int result = cutIndex[commands[i, 2] - 1];
+                answer.Add(result);
             }
 
-            // 정답수 비교할 리스트 만들기
-            List<int> bestStudents = new List<int>();
-
-            // 정답수 비교
-            for (int i = 0; i < 3; i++)
-            {
-                int bestScore = rightAnswerNum.Max();
-
-                if (bestScore == rightAnswerNum[i])
-                {
-                    bestStudents.Add(i+1);
-                }
-            }
-            bestStudents.Sort();
-
-            return bestStudents.ToArray();
+            return answer.ToArray();
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-            int[] answer = { 1, 3, 2, 4, 2, 1, 3, 2, 4, 2, 1, 3, 2, 4, 2 };
-            Solution sol = new Solution();
-            int[] result = sol.solution(answer);
-            
-            for(int i = 0; i < result.Length; i++)
-            {
+            int[] array = { 1, 5, 2, 6, 3, 7, 4 };
+            int[,] commands = { { 2, 5, 3 }, { 4, 4, 1 }, { 1, 7, 3 } };
 
-            Console.Write(result[i] +", ");
+            Solution sol = new Solution();
+            int[] result = sol.solution(array, commands);
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                Console.Write(result[i] + ", ");
             }
+
         }
     }
 }
