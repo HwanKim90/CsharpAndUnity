@@ -20,7 +20,7 @@ public class EnemyManager : MonoBehaviour
         //currTime 흐르게한다. (증가시킨다)
         currTime += Time.deltaTime;
         //1.만약에 일정시간이 지나면
-        if (createTime < currTime)
+        if (currTime > createTime)
         {
             //2.Enemy공장에서 Enemy를 만든다.
             GameObject enemy = Instantiate(enemyFactory);

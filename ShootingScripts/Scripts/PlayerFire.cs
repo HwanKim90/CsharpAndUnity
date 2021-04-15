@@ -7,7 +7,8 @@ public class PlayerFire : MonoBehaviour
     // 총알공장
     public GameObject bulletFactory;
     // 발사위치
-    public GameObject firePos;
+    // type을 GameObject -> Transform으로 바꿀 수 있음
+    public Transform firePos;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +24,7 @@ public class PlayerFire : MonoBehaviour
             //2.총알을 총알 공장에서 만든다.
             GameObject bullet = Instantiate(bulletFactory);
             //3.만들어진 총알을 firePos의 위치에 놓는다.
-            bullet.transform.position = firePos.transform.position;
+            bullet.transform.position = firePos.position;
         }
     }
 }

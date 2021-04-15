@@ -6,10 +6,13 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public int speed = 50;
-    
+
+    // 게임오버 UI
+    GameObject goBG;
     void Start()
     {
-        
+        goBG = GameObject.Find("GameOverBG");
+        goBG.SetActive(false);
     }
     void Update()
     {
@@ -46,10 +49,11 @@ public class PlayerMove : MonoBehaviour
         //transform.position += transform.right * speed * Time.deltaTime; space.self 오브젝트 중심으로 오른쪽으로 움직임
     }
 
-    //void Translate(Vector3 dir)
-    //{
-        
-    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        // 2.활성화 시키자.
+        goBG.SetActive(true);
+    }
 }
         
         
