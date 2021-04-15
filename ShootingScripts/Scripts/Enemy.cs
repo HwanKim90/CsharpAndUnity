@@ -12,10 +12,17 @@ public class Enemy : MonoBehaviour
     // 폭발공장
     public GameObject exploFactory;
 
+    public GameObject[] models;
+    
+
     void Start()
     {
-        
+        // 랜덤한 0~2 중에 랜덤한 값을 얻자
+        int randModel = Random.Range(0, models.Length);
+        models[randModel].SetActive(true);
 
+       
+        
         int rand = Random.Range(1, 11);
 
         //Random.Range()
@@ -63,14 +70,16 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // 1.ScoreManager 게임오브젝트 찾고
-        GameObject smObj = GameObject.Find("ScoreManager");
-        
-        // 2.찾은 ScoreManager 게임오브젝트 -> ScoreManager스크립트
-        ScoreManager sm = smObj.GetComponent<ScoreManager>();
+        //// 1.ScoreManager 게임오브젝트 찾고
+        //GameObject smObj = GameObject.Find("ScoreManager");
 
-        // 3.sm이 가지고 있는 AddScore함수 실행
-        sm.AddScore(10);
+        //// 2.찾은 ScoreManager 게임오브젝트 -> ScoreManager스크립트
+        //ScoreManager sm = smObj.GetComponent<ScoreManager>();
+
+        //// 3.sm이 가지고 있는 AddScore함수 실행
+        //sm.AddScore(10);
+        ScoreManager.instance.AddScore(10);
+        
 
 
         // 1.충돌공장에서 충돌효과를 생성
@@ -79,9 +88,19 @@ public class Enemy : MonoBehaviour
         // 2.만들어진 효과를 위치시킨다.
         explo.transform.position = transform.position;
 
-        //print("Collision : " + collision.gameObject.name);
-        // 충돌한 게임오브젝트 없애고
-        Destroy(collision.gameObject);
+
+        // Player게임오브젝트 찾자
+        GameObject player = GameObject.Find("Player");
+
+        // PlayerFire 컴포넌트 가져오고
+        PlayerFire pf = player.GetComponent<PlayerFire>();
+
+        // PlayerFire 컴포넌트의 AddMagazine 을 실행
+        pf.AddMagazine(collision.gameObject);
+        
+        ////print("Collision : " + collision.gameObject.name);
+        //// 충돌한 게임오브젝트 없애고
+        //Destroy(collision.gameObject);
         
         // 나의 게임오브젝트 없애자
         Destroy(gameObject);
@@ -93,6 +112,8 @@ public class Enemy : MonoBehaviour
 }
 
     
+
+
 
     
 

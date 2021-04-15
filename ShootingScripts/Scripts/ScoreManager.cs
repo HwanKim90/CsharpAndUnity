@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+    // 싱글턴 (하나만 사용해서 어디서든 접근하기 편하게) static
+    public static ScoreManager instance;
+    
+    
     // 현재 점수
     int currScore;
     // 현재 점수 UI(TexT)
@@ -15,6 +19,13 @@ public class ScoreManager : MonoBehaviour
     int bestScore;
     // 베스트 점수 UI(Text)
     public Text bestScoreUI;
+
+
+    void Awake()
+    {
+        // 싱글턴, 자기 자신을 넣어준다.
+        instance = this;
+    }
 
     void Start()
     {

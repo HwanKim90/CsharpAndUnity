@@ -12,12 +12,12 @@ public class Explosion : MonoBehaviour
     private void Start()
     {
         // 파티클 실행
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        ps.Play();
+        //ParticleSystem ps = GetComponent<ParticleSystem>();
+        //ps.Play();
 
-        // 오디오 실행
-        AudioSource audio = GetComponent<AudioSource>();
-        audio.Play();
+        //// 오디오 실행
+        //AudioSource audio = GetComponent<AudioSource>();
+        //audio.Play();
     }
 
     // 파괴만 할거면 간단한 방법
