@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DotProduct
 {
@@ -12,28 +8,29 @@ namespace DotProduct
         {
             public int solution(int[] a, int[] b)
             {
-                int result = 0;
                 int answer = 0;
 
                 for (int i = 0; i < a.Length; i++)
                 {
-                    result = a[i] * b[i];
-                    answer += result;
+                    answer += a[i] * b[i];
                 }
                 return answer;
             }
         }
+
         static void Main(string[] args)
         {
-            int[] a = { -1,0,1 };
-            int[] b = { 1,0,-1 };
+            int[] a = { 1, 2, 3, 4 };
+            int[] b = { -1, -2, 0, 2 };
 
-            
+            Solution sol = new Solution();
+            int result = sol.solution(a, b);
+            Console.WriteLine(result);
 
-            Console.WriteLine(answer);
         }
     }
+}              
                
                
-               
-}
+
+              
