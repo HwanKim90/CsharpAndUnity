@@ -13,6 +13,9 @@ public class PlayerFire : MonoBehaviour
     // 총알효과
     public GameObject bulletEft;
 
+    // 총알 파워
+    public float bulletPower = 20f;
+
     void Update()
     {
         if (Input.GetButtonDown("Fire2"))
@@ -24,6 +27,7 @@ public class PlayerFire : MonoBehaviour
             Rigidbody rb = bomb.GetComponent<Rigidbody>();
             // 5.카메라가 바라보는 방향으로 물리적인 힘을 가한다.
             rb.AddForce(Camera.main.transform.forward * throwPower);
+
 
         }
 
@@ -48,10 +52,21 @@ public class PlayerFire : MonoBehaviour
                 // 3.파티클 실행
                 ParticleSystem ps = bulletEft.GetComponent<ParticleSystem>();
                 ps.Play();
-                // 4.사운드 실행
-                AudioSource audio = bulletEft.GetComponent<AudioSource>();
-                audio.Play();
+                
+                // 만약에 맞은놈의 Layer가 Enemy라면
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    // Enemy 컴포넌트 가져오고
+                    Enemy enemy = hit.transform.GetComponent<Enemy>();
+                    // HitEnemy 함수를 실행
+                    enemy.HitEnemy(bulletPower);
+
+                }
             }
+            // 4.사운드 실행
+            AudioSource audio = bulletEft.GetComponent<AudioSource>();
+            audio.Play();
+            
         }
     }
 }

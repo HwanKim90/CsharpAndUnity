@@ -22,6 +22,9 @@ public class PlayerMove : MonoBehaviour
     // 최대점프횟수
     int maxJumpCnt = 2;
 
+    // 현재 HP
+    float hp = 100f;
+
     void Start()
     {
         cc = GetComponent<CharacterController>();    
@@ -67,6 +70,13 @@ public class PlayerMove : MonoBehaviour
         dir.y = yVelocity;
         
         cc.Move(dir * speed * Time.deltaTime);
+    }
+    
+    public void DamagedAction(float damage)
+    {
+        // damage 만큼 hp를 줄인다.
+        hp -= damage;
+        print("현재 HP : " + hp);
     }
 }
         

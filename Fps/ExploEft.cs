@@ -16,12 +16,19 @@ public class ExploEft : MonoBehaviour
 
         // 3초 있다가 파괴하자
         //Destroy(gameObject, 3);
-        Invoke("DestroyObject", 3);
+        //Invoke("DestroyObject", 3);
+        StartCoroutine(DestroyObject());
     }
 
     
-    void DestroyObject()
+    //void DestroyObject()
+    //{
+    //    Destroy(gameObject);
+    //}
+
+    IEnumerator DestroyObject()
     {
+        yield return new WaitForSeconds(3);
         Destroy(gameObject);
     }
 }
