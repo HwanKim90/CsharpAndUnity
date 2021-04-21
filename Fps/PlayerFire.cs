@@ -18,6 +18,14 @@ public class PlayerFire : MonoBehaviour
 
     void Update()
     {
+        //// 만약에 GameState가 Play가 아닐때
+        //if (GameManager.instance.state != GameManager.GameState.Play)
+        //{
+        //    return; // 여기서 함수 끝나고 if문 밑에 코드 실행안함
+        //}
+        if (!GameManager.instance.isPlaying()) return;
+        
+
         if (Input.GetButtonDown("Fire2"))
         {
             GameObject bomb = Instantiate(bombFactory);

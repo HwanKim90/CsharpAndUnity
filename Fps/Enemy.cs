@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
     // 이동 속력
     public float moveSpeed = 3f;
     // 공격 대기 시간
-    public float attackDelay = 1f;
+    public float attackDelay = 3f;
     // 누적 시간
     float currTime = 0f;
     // 공격력
@@ -39,6 +39,9 @@ public class Enemy : MonoBehaviour
     public float moveDistance = 20f;
     // 초기 위치값
     Vector3 originPos;
+
+    // 애니메이터
+    Animator anim;
 
     void Start()
     {
@@ -53,13 +56,22 @@ public class Enemy : MonoBehaviour
 
         // hp 초기 세팅
         hp = maxHP;
+
+        // Animator 세팅
+        anim = GetComponentInChildren<Animator>();
     }
 
     
     void Update()
     {
+        // 만약에 GameState가 Play가 아닐때
+        if (GameManager.instance.state != GameManager.GameState.Play)
+        {
+            return; // 여기서 함수 끝나고 if문 밑에 코드 실행안함
+        }
+
         // 현재 상태에 따라 정해진 기능 수행하고 싶다.
-        switch(state)
+        switch (state)
         {
             case EnemyState.Idel:
                 Idle();
@@ -93,6 +105,8 @@ public class Enemy : MonoBehaviour
         {
             state = EnemyState.Move;
             print("상태 전환 : Idel -> Move");
+            // move 애니로 변경
+            anim.SetTrigger("Move");
         }
     }
 
@@ -114,15 +128,13 @@ public class Enemy : MonoBehaviour
             print("상태 전환 : Move -> Attack");
             // 누적시간을 공격 대기시간만큼 미리 진행시켜 놓자.
             currTime = attackDelay;
+            // Attack 애니로 변경
+            //anim.SetTrigger("Attack");
         }
         else
         {
-            // 플레이어를 향해 움직이자
-            // 1.방향을 구하고
-            Vector3 dir = player.position - transform.position;
-            dir.Normalize();
-            // 2.그 방향으로 움직이자.
-            transform.position += dir * moveSpeed * Time.deltaTime;
+            MoveAction(player.position);
+            
         }
     }
 
@@ -144,8 +156,10 @@ public class Enemy : MonoBehaviour
                 //PlayerMove pm = player.GetComponent<PlayerMove>();
                 //// 2.DamageAction 실행
                 //pm.DamagedAction(attackPower);
-                player.GetComponent<PlayerMove>().DamagedAction(attackPower);
+                
                 currTime = 0;
+                // Attack 애니로 변경
+                anim.SetTrigger("Attack");
             }
         }
         else
@@ -153,15 +167,20 @@ public class Enemy : MonoBehaviour
             // 이동 상태로 전환한다.
             state = EnemyState.Move;
             print("상태 전환 : Attack -> Move");
+            // Move 애니로 변경
+            anim.SetTrigger("Move");
         }
     }
+
+    public void AttackAction()
+    {
+        player.GetComponent<PlayerMove>().DamagedAction(attackPower);
+    }
+
     void Return()
     {
-        // 초기위치로 가는 방향을 구하고
-        Vector3 dir = originPos - transform.position;
-        dir.Normalize();
-        // 그뱡향으로 움직이자.
-        transform.position += dir * moveSpeed * Time.deltaTime; 
+        MoveAction(originPos);
+        
 
         // 만약에 초기위치와 나의위의 차이가 0.1보다 작으면
         if (Vector3.Distance(originPos, transform.position) < 0.1f)
@@ -171,17 +190,20 @@ public class Enemy : MonoBehaviour
             print("상태 전환 : Return -> Idle");
             // 강제로 위치를 초기위치로 세팅
             transform.position = originPos;
+            anim.SetTrigger("Idle");
         }
     }
         
 
     IEnumerator Damaged()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.14f);
 
         //상태를 Move상태로
         state = EnemyState.Move;
         print("상태 전환 : Damaged -> Move");
+        // Move 애니 실행
+        
 
         //currTime += Time.deltaTime;
         ////일정시간이 지나면(맞는 모션만큼 기다렸다가)
@@ -204,6 +226,9 @@ public class Enemy : MonoBehaviour
     public GameObject hpUI;
     public void HitEnemy(float damage)
     {
+        // 모든 코루틴 스탑
+        StopAllCoroutines();
+
         //현재 hp를 damage만큼 줄여주자
         hp -= damage;
 
@@ -228,9 +253,25 @@ public class Enemy : MonoBehaviour
             print("상태 전환 : Any State -> Damaged");
             // Damaged함수 실행
             StartCoroutine(Damaged());
+            // Damaged 애니 실행
+            anim.SetTrigger("Damaged");
         }
     }
+
+    void MoveAction(Vector3 targetPos)
+    {
+        
+        Vector3 dir = targetPos - transform.position;
+        dir.Normalize();
+        transform.forward = dir;
+        
+        transform.position += dir * moveSpeed * Time.deltaTime;
+    }
 }
+
+    
+
+
             
        
         

@@ -23,6 +23,12 @@ public class ObjRotate : MonoBehaviour
     
     void Update()
     {
+        // 만약에 GameState가 Play가 아닐때
+        if (GameManager.instance.state != GameManager.GameState.Play)
+        {
+            return; // 여기서 함수 끝나고 if문 밑에 코드 실행안함
+        }
+
         // 마우스의 움직임값을 받아오자.
         float mx = Input.GetAxis("Mouse X");
         float my = Input.GetAxis("Mouse Y");
