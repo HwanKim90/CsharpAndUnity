@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Mission : MonoBehaviour
 {
-    float currTime = 0;
+
     // 타겟 Transform을 담아놓을 배열
     public Transform[] target;
     public int[] numbers;

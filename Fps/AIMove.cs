@@ -14,6 +14,8 @@ public class AIMove : MonoBehaviour
     // 네비메쉬
     NavMeshAgent navi;
 
+    
+
     void Start()
     {
         navi = GetComponent<NavMeshAgent>();
@@ -46,6 +48,8 @@ public class AIMove : MonoBehaviour
                 //dir.Normalize();
             }
         }
+
+        
 
         //if (dist > 0)
         //{

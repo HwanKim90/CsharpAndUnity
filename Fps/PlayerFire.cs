@@ -46,10 +46,14 @@ public class PlayerFire : MonoBehaviour
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
             // 부딪히 놈의 정보를 담을 변수
-            RaycastHit hit;
+            RaycastHit hit = new RaycastHit();
+
+            int layerEnemy = 1 << LayerMask.NameToLayer("Enemy");
+            int layerBomb = 1 << LayerMask.NameToLayer("Bomb");
+            int layer = layerEnemy | layerBomb;
 
             // 그 Ray가 어딘가에 부딪히면 정보를 담아서
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 100, ~layer))
             {
                 // 그 정보에 의해 효과를 보여주자        
                 //print(hit.transform.gameObject.name);
