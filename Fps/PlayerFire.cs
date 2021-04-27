@@ -45,15 +45,25 @@ public class PlayerFire : MonoBehaviour
             // 카메라의 앞방향으로 발사되는 Ray를 만든다.
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
+            // 일직선상 부딪힌놈 다 가지고온다. 배열로 변수를 받는다.
+            RaycastHit[] hits =  Physics.RaycastAll(ray);
+            if (hits.Length > 0)
+            {
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    print(hits[i].transform.gameObject.name);
+                }
+            }
+
             // 부딪히 놈의 정보를 담을 변수
             RaycastHit hit = new RaycastHit();
 
             int layerEnemy = 1 << LayerMask.NameToLayer("Enemy");
             int layerBomb = 1 << LayerMask.NameToLayer("Bomb");
-            int layer = layerEnemy | layerBomb;
+            int layer = layerEnemy | layerBomb; // 이두개만 충돌하게 만들겠다.
 
             // 그 Ray가 어딘가에 부딪히면 정보를 담아서
-            if (Physics.Raycast(ray, out hit, 100, ~layer))
+            if (Physics.Raycast(ray, out hit, 100, ~layer)) //layer앞의 ~붙이면 두개 빼고 다 충돌
             {
                 // 그 정보에 의해 효과를 보여주자        
                 //print(hit.transform.gameObject.name);
