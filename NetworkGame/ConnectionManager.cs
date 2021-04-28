@@ -48,6 +48,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         PhotonNetwork.NickName = nickName.text;
         // 로비접속 요청
         PhotonNetwork.JoinLobby(TypedLobby.Default);
+        //PhotonNetwork.JoinLobby(new TypedLobby("로비이름",LobbyType.Default));
     }
 
     // Lobby 접속 성공

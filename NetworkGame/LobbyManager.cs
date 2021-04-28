@@ -89,13 +89,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             print(roomList[i].Name);
             
         }
-        // 현재 만들어진 UI를 삭제
+        // 1.현재 만들어진 UI를 삭제
         DeleteRoomList();
-        // roomCache 정보 갱신
+        // 2.roomCache 정보 갱신
         UpdateRoomCache(roomList);
-        // UI 새롭게 만든다.
-
+        // 3.UI 새롭게 만든다.
         CreateRoomList();
+
     }
     
     // RoomCache 갱신
@@ -140,6 +140,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             RoomInfoBtn btn = room.GetComponent<RoomInfoBtn>();
             // 4.가져온 컴포넌트의 SetInfo 함수 호출
             btn.SetInfo(info.Name, info.PlayerCount, info.MaxPlayers);
+            // 5. 클릭 되었을 때 함수를 등록
+            btn.clickAction = OnClickRoomInfo;
         }
+    }
+
+    void OnClickRoomInfo(string roomName)
+    {
+        roomNameInput.text = roomName;
     }
 }
