@@ -11,6 +11,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public InputField roomNameInput;
     public InputField maxUserInput;
 
+    // Join 버튼
+    public Button joinBtn;
+    // MaxUser 버튼
+    public Button maxUserBtn;
+    
     // 방 목록 캐시
     Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
 
@@ -21,8 +26,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        
+        roomNameInput.onValueChanged.AddListener(OnChangedRoomName);
+        maxUserInput.onValueChanged.AddListener(OnChangedMaxUser);
     }
+
 
     
     void Update()
@@ -140,7 +147,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             RoomInfoBtn btn = room.GetComponent<RoomInfoBtn>();
             // 4.가져온 컴포넌트의 SetInfo 함수 호출
             btn.SetInfo(info.Name, info.PlayerCount, info.MaxPlayers);
-            // 5. 클릭 되었을 때 함수를 등록
+            // 5.클릭 되었을 때 함수를 등록
             btn.clickAction = OnClickRoomInfo;
         }
     }
@@ -148,5 +155,29 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void OnClickRoomInfo(string roomName)
     {
         roomNameInput.text = roomName;
+    }
+
+    void OnChangedRoomName(string roomName)
+    {
+        joinBtn.interactable = roomName.Length > 0;
+        OnChangedMaxUser(maxUserInput.text);
+        #region 다른방법!!
+        //// 만약에 roomName 길이가 0보다 크면
+        //if (roomName.Length > 0)
+        //{
+        //    // Join버튼의 interactable 활성화
+        //    joinBtn.interactable = true;
+        //}
+        //else
+        //{
+        //    // Join버튼의 interactable 비활성화
+        //    joinBtn.interactable = false;
+        //}
+        #endregion
+    }
+
+    void OnChangedMaxUser(string maxUser)
+    {
+        maxUserBtn.interactable = (maxUser.Length > 0 && roomNameInput.text.Length > 0);
     }
 }
