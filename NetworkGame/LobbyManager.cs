@@ -47,8 +47,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // 목록에는 보이는데 들어갈 수 있는지 없는지 여부
         roomOption.IsOpen = true;
         // 방을 만든다.
-        PhotonNetwork.CreateRoom(roomNameInput.text, roomOption, TypedLobby.Default);
-        //PhotonNetwork.JoinOrCreateRoom(roomNameInput.text, roomOption, TypedLobby.Default);
+        //PhotonNetwork.CreateRoom(roomNameInput.text, roomOption, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomNameInput.text, roomOption, TypedLobby.Default);
         
     }
 

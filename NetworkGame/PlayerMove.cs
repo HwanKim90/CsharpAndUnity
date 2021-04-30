@@ -1,21 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
 
 public class PlayerMove : MonoBehaviourPun, IPunObservable
 {
     public float moveSpeed = 5;
-
+    
+    public Material red;
+    public Material blue;
+    public MeshRenderer body;
+    
     // 상대방 위치, 회전
     Vector3 otherPos;
     Quaternion otherRot;
 
     // 카메라
     public GameObject cam;
-
     // 총
     public Transform gun;
+    // 닉네임 ui
+    public Text nickNameUI;
+    // HP
+    public float hp;
+    public float maxHp = 100f;
+    public Slider hpSlider;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -42,9 +52,27 @@ public class PlayerMove : MonoBehaviourPun, IPunObservable
 
     void Start()
     {
+        // 현재 HP 세팅
+        hp = maxHp;
+
+        // 닉네임 세팅
+        nickNameUI.text = photonView.Owner.NickName;
+
         // 내것일때만 카메라를 켜주자
         if (photonView.IsMine)
+        {
             cam.SetActive(true);
+            // 닉네임 비활성화.
+            nickNameUI.gameObject.SetActive(false);
+            // HP 비활성화
+            hpSlider.gameObject.SetActive(false);
+            body.material = blue;
+        }
+        else
+        {
+            cam.SetActive(false);
+            body.material = red;
+        }
     }
 
     void Update()
@@ -79,6 +107,20 @@ public class PlayerMove : MonoBehaviourPun, IPunObservable
         transform.position += dir * moveSpeed * Time.deltaTime;
     }
 
+    public void OnDamaged(float damage)
+    {
+        photonView.RPC("RpcOnDamaged", RpcTarget.All, damage);
+    }
     
+    [PunRPC]
+    void RpcOnDamaged(float damage)
+    {
+        
+        // 모두 데미지를 깍는다.
+        hp -= damage;
+        // hp slider를 hp 값으로 세팅
+        hpSlider.value = hp / maxHp;
+        print(photonView.Owner.NickName + "HP : " + hp);
+    }
 }
         
