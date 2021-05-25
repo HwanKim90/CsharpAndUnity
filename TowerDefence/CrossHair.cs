@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class CrossHair : MonoBehaviour
 {
-    
-    void Start()
-    {
-        
-    }
-
-    
     void Update()
     {
         // 1.Ray를 만든다(카메라위치, 카메라앞방향)
